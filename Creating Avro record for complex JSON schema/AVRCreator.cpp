@@ -148,3 +148,34 @@ bool AVRCreartor::buildTradeRecord()
     }
     return true;
 }
+
+void AVRCreartor::buildTradeBlock(segmentDesc &curseg, extractTrade::TradeDetailRecord &pTradeBlock)
+{
+    //create a field pointer const baseField *pf = NULL;
+    int segFieldcnt = curseg.fieldList.size();
+    
+    if (!validseg(curseg, 0))
+    {
+        return;
+    }
+    
+    for (int i = 0; i < segFieldcnt; i++)
+    {
+        pf = pRec->findfield(curseg.fieldList[i].fieldId);
+        if (pf)
+        {
+            string fieldValue = pf->fValue;
+            setStructureVariableTrade<int, extractTrade::TradeDetailRecord, const char* > ((int)curseg.fieldList[i].fieldId, &pTradeBlock, fieldValue.data());
+        }
+        else if (curseg.fieldList[i].subfiledPos != 0 )
+        {
+            std::string svalue = "0";
+            if (ISTRUE(curseg.fieldList[i].parentId, curseg.fieldList[i].fieldId))
+            {
+                svalue = "1"
+            }
+            setStructureVariableTrade<int, extractTrade::TradeDetailRecord, const char* > ((int)curseg.fieldList[i].fieldId, &pTradeBlock, sValue.data());
+        }
+    }
+    return;
+}
