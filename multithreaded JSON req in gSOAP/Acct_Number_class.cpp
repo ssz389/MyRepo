@@ -99,7 +99,7 @@ void Acct_number_cls::load_table(string mbrActNum)
             string lAct_num(szActNum);
             string lMbr_num(szMbrNum);
             request["decrypt"]["bulk"]["data"][req_ctr]["content"] = lAct_num;
-            //request["unprotect"]["bulk"]["data"][req_ctr]["id"] = req_ctr;
+            //request["decrypt"]["bulk"]["data"][req_ctr]["id"] = req_ctr;
             request["decrypt"]["bulk"]["data"][req_ctr]["Member"] = lMbr_num;
             req_ctr++;
             
