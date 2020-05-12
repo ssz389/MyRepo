@@ -73,7 +73,7 @@ void Acct_number_cls::load_table(string mbrActNum)
         }
         
         mbrActNumber = new (string mbrActNumber, int lrecCount);
-        sprintf(sql, "select Mbr_Account, Acct_number from NDE_LOOKUP where Mbr_Account = %s ", mbrActNum);
+        sprintf(sql, "select Mbr_Account, Acct_number from ACCT_LOOKUP where Mbr_Account = %s ", mbrActNum);
         otl_stream otl3(1, (const char*) sql, *db);
         char szMbrNum[11], szActNum[11];
         
@@ -89,18 +89,18 @@ void Acct_number_cls::load_table(string mbrActNum)
             if(isFirst)
             {
                 request = NULL;
-                request["unprotect"]["bulk"]["id"] = upi_ctr + 1;
-                request["unprotect"]["policyuser"] = "Pol1";
-                request["unprotect"]["dataelementname"] = "COMM";
+                request["decrypt"]["bulk"]["id"] = upi_ctr + 1;
+                request["decrypt"]["policyuser"] = "Pol1";
+                request["decrypt"]["dataelementname"] = "COMM";
                 isFirst = false;
                 upi_ctr++;
             }
             
             string lAct_num(szActNum);
             string lMbr_num(szMbrNum);
-            request["unprotect"]["bulk"]["data"][req_ctr]["content"] = lAct_num;
+            request["decrypt"]["bulk"]["data"][req_ctr]["content"] = lAct_num;
             //request["unprotect"]["bulk"]["data"][req_ctr]["id"] = req_ctr;
-            request["unprotect"]["bulk"]["data"][req_ctr]["Member"] = lMbr_num;
+            request["decrypt"]["bulk"]["data"][req_ctr]["Member"] = lMbr_num;
             req_ctr++;
             
             if( req_ctr == 50000 )
@@ -202,15 +202,15 @@ void *process_request(void *arguments)
     int res_ctr = 0;
     if(isSoap_OK && jsonClientObj->isValid())
     {
-        if(response["unprotect"]["bulk"].has("data") && !response["unprotect"]["bulk"]["data"].is_null())
+        if(response["decrypt"]["bulk"].has("data") && !response["decrypt"]["bulk"]["data"].is_null())
         {
             while( res_ctr <= req_ctr )
             {
-                if(response["unprotect"]["bulk"]["data"][res_ctr].has("content") && !response["unprotect"]["bulk"]["data"][res_ctr]["content"].is_null())
+                if(response["decrypt"]["bulk"]["data"][res_ctr].has("content") && !response["decrypt"]["bulk"]["data"][res_ctr]["content"].is_null())
                 {
                     string lMbrActNum = "";
-                    string detokActNum = response["unprotect"]["bulk"]["data"][res_ctr]["content"];
-                    string mbrActNum = response["unprotect"]["bulk"]["data"][res_ctr]["Member"];
+                    string detokActNum = response["decrypt"]["bulk"]["data"][res_ctr]["content"];
+                    string mbrActNum = response["decrypt"]["bulk"]["data"][res_ctr]["Member"];
                     lMbrActNum = mbrActNum;
                     lMbrActNum += detokActNum;
                     pthread_mutex_lock(&mutexhash);
@@ -232,15 +232,15 @@ void *process_request(void *arguments)
             pthread_mutex_unlock(&mutexhash);
         }
         
-        if(request["unprotect"]["bulk"]..has("data") && !request["unprotect"]["bulk"]["data"].is_null())
+        if(request["decrypt"]["bulk"]..has("data") && !request["decrypt"]["bulk"]["data"].is_null())
         {
             while( res_ctr <= req_ctr )
             {
-                if(request["unprotect"]["bulk"]["data"][res_ctr].has("content") && !request["unprotect"]["bulk"]["data"][res_ctr]["content"].is_null())
+                if(request["decrypt"]["bulk"]["data"][res_ctr].has("content") && !request["decrypt"]["bulk"]["data"][res_ctr]["content"].is_null())
                 {
                     string lMbrActNum = "";
-                    string detokActNum = request["unprotect"]["bulk"]["data"][res_ctr]["content"];
-                    string mbrActNum = request["unprotect"]["bulk"]["data"][res_ctr]["Member"];
+                    string detokActNum = request["decrypt"]["bulk"]["data"][res_ctr]["content"];
+                    string mbrActNum = request["decrypt"]["bulk"]["data"][res_ctr]["Member"];
                     lMbrActNum = mbrActNum;
                     lMbrActNum += detokActNum;
                     pthread_mutex_lock(&mutexhash);
