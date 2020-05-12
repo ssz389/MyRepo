@@ -51,7 +51,7 @@ void Acct_number_cls::load_table(string mbrActNum)
     }
     try
     {
-        sprintf(sql, "select count(1) from NDE_LOOKUP where Mbr_Account = %s ", mbrActNum);
+        sprintf(sql, "select count(1) from LOOKUP where Mbr_Account = %s ", mbrActNum);
         otl_stream otl1(1, (const char*) sql, *db);
         otl.scanf("%d", &lrecCount);
         
@@ -61,7 +61,7 @@ void Acct_number_cls::load_table(string mbrActNum)
         memset(pwd, 0x00, sizeof(pwd));
         memset(usr, 0x00, sizeof(pwd));
         memset(hst, 0x00, sizeof(pwd));
-        sprintf(sql, "select trgt_host, trgt_usrId, trgt_pwd from EDATA_OUT where Lookup = 'DETOK' ");
+        sprintf(sql, "select trgt_host, trgt_usrId, trgt_pwd from CONFIG where Lookup = 'DECRYPT' ");
         
         otl_stream otl2(1, (const char*) sql, *db);
         if (otl2.eof())
@@ -90,8 +90,8 @@ void Acct_number_cls::load_table(string mbrActNum)
             {
                 request = NULL;
                 request["unprotect"]["bulk"]["id"] = upi_ctr + 1;
-                request["unprotect"]["policyuser"] = "policyuser1";
-                request["unprotect"]["dataelementname"] = "US_COMM_PAN";
+                request["unprotect"]["policyuser"] = "Pol1";
+                request["unprotect"]["dataelementname"] = "COMM";
                 isFirst = false;
                 upi_ctr++;
             }
