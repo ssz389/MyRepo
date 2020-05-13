@@ -146,6 +146,7 @@ bool AVRCreartor::buildTradeRecord()
             }
         }
     }
+    pTradeRec.pii.assign(vPIIRec.begin(), vPIIRec.end());
     return true;
 }
 
@@ -178,4 +179,121 @@ void AVRCreartor::buildTradeBlock(segmentDesc &curseg, extractTrade::TradeDetail
         }
     }
     return;
+}
+
+tempplate <typename T1, typename T2, typename T3>
+void AVRCreartor::buildDOBBlock(T1 &curseg, T2 &vDOBRec, T3 pDOBRec)
+{
+    //create a field pointer const baseField *pf = NULL;
+    int segFieldcnt = curseg.fieldList.size();
+    
+    if (!validseg(curseg, 0))
+    {
+        return;
+    }
+    
+    for (int i = 0; i < segFieldcnt; i++)
+    {
+        pf = pRec->findfield(curseg.fieldList[i].fieldId);
+        if (pf)
+        {
+            string fieldValue = pf->fValue;
+            setStructureVariableDOB<int, T3, const char* > ((int)curseg.fieldList[i].fieldId, &pDOBRec, fieldValue.data());
+        }
+        else if (curseg.fieldList[i].subfiledPos != 0 )
+        {
+            std::string svalue = "0";
+            if (ISTRUE(curseg.fieldList[i].parentId, curseg.fieldList[i].fieldId))
+            {
+                svalue = "1"
+            }
+            setStructureVariableDOB<int, T3, const char* > ((int)curseg.fieldList[i].fieldId, &pDOBRec, sValue.data());
+        }
+    }
+    vDOBRec.push_back(pDOBRec);
+    return;
+}
+
+tempplate <typename T1, typename T2, typename T3>
+void AVRCreartor::buildNameBlock(T1 &curseg, T2 &vNameRec, T3 pNameRec)
+{
+    //create a field pointer const baseField *pf = NULL;
+    int segFieldcnt = curseg.fieldList.size();
+    
+    if (!validseg(curseg, 0))
+    {
+        return;
+    }
+    
+    for (int i = 0; i < segFieldcnt; i++)
+    {
+        pf = pRec->findfield(curseg.fieldList[i].fieldId);
+        if (pf)
+        {
+            string fieldValue = pf->fValue;
+            setStructureVariableName<int, T3, const char* > ((int)curseg.fieldList[i].fieldId, &pNameRec, fieldValue.data());
+        }
+        else if (curseg.fieldList[i].subfiledPos != 0 )
+        {
+            std::string svalue = "0";
+            if (ISTRUE(curseg.fieldList[i].parentId, curseg.fieldList[i].fieldId))
+            {
+                svalue = "1"
+            }
+            setStructureVariableName<int, T3, const char* > ((int)curseg.fieldList[i].fieldId, &pNameRec, sValue.data());
+        }
+    }
+    vNameRec.push_back(pNameRec);
+    return;
+}
+
+tempplate <typename T1, typename T2, typename T3, typename T4, typename T5>
+void AVRCreartor::buildPIIBlock(T1 &curseg, T2 &vPIIRec, T3 &vNameRec, T4 &vDOBRec, T4 pPIIRec)
+{
+    //create a field pointer const baseField *pf = NULL;
+    int segFieldcnt = curseg.fieldList.size();
+    
+    if (!validseg(curseg, 0))
+    {
+        return;
+    }
+    
+    for (int i = 0; i < segFieldcnt; i++)
+    {
+        pf = pRec->findfield(curseg.fieldList[i].fieldId);
+        if (pf)
+        {
+            string fieldValue = pf->fValue;
+            setStructureVariablePII<int, T3, const char* > ((int)curseg.fieldList[i].fieldId, &pPIIRec, fieldValue.data());
+        }
+        else if (curseg.fieldList[i].subfiledPos != 0 )
+        {
+            std::string svalue = "0";
+            if (ISTRUE(curseg.fieldList[i].parentId, curseg.fieldList[i].fieldId))
+            {
+                svalue = "1"
+            }
+            setStructureVariablePII<int, T3, const char* > ((int)curseg.fieldList[i].fieldId, &pPIIRec, sValue.data());
+        }
+    }
+    pPIIRec.name.assign(vNameRec.begin(), vNameRec.end()); /// when you run avrogen, these structures will be created using json schema
+    pPIIRec.dateOfBirth.assign(vDOBRec.begin(), vDOBRec.end());
+    vPIIRec.push_back(pPIIRec);
+    return;
+}
+
+void AVRCreartor::writeToOutputFile()
+{
+    switch(recordtype)
+    {
+        case eTRADE:
+            if (pTradeDataWriter)
+            {
+                pTradeDataWriter->write(pTradeRec)
+            }
+            break;
+        case default:
+            return;
+            break;
+    }
 }
