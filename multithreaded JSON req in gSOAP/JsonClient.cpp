@@ -2,12 +2,26 @@ include "json.h"
 
 class JsonClient
 {
+    protected:
     bool soap_status = true;
     bool conn_fail = true;
     soap *ctx = NULL;
     value request, response;
-    string menpoint, mlogfile
-}
+    string menpoint, mlogfile;
+    
+    public:
+    JsonClient(string, string, string);
+    void setRequest(value&);
+    value& getresponse()
+    {
+        return response;
+    }
+    bool isValid();
+    bool isConnFailure();
+    bool callService();
+    ~JsonClient();
+};
+
 pthread_mutex_t mutexfile = PTHREAD_MUTEX_INITIALIZER;
 JsonClient::JsonClient(string serviceHost, string usrname, string pass)
 {
