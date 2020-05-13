@@ -188,7 +188,7 @@ void *process_request(void *arguments)
     value response;
     
     extractJsonClient *jsonClientObj = NULL;
-    jsonClientObj = new extractJsonClient(Args->Acct_numberObj->ghost, Args->Acct_numberObj->gusr, Args->Acct_numberObj->gpwd );
+    jsonClientObj = new JsonClient(Args->Acct_numberObj->ghost, Args->Acct_numberObj->gusr, Args->Acct_numberObj->gpwd );
     jsonClientObj->setRequest(request);
     if(jsonClientObj != NULL && jsonClientObj->isValid())
     {
