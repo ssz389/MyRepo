@@ -10,7 +10,7 @@ NOTE: May give compilation error due to incomplete code.
 
 #include <iostream>
 #include <pthread>
-#include <extractClientJson>
+#include <JsonCleint>
 //#include "json.h"
 
 class Acct_number_cls
@@ -187,7 +187,7 @@ void *process_request(void *arguments)
     bool isSoap_OK = false;
     value response;
     
-    extractJsonClient *jsonClientObj = NULL;
+    JsonClient *jsonClientObj = NULL;
     jsonClientObj = new JsonClient(Args->Acct_numberObj->ghost, Args->Acct_numberObj->gusr, Args->Acct_numberObj->gpwd );
     jsonClientObj->setRequest(request);
     if(jsonClientObj != NULL && jsonClientObj->isValid())
@@ -223,7 +223,7 @@ void *process_request(void *arguments)
     }
     else
     {
-        if(jsonClientObj != NULL && jsonClientObj->isConnectionFailure())
+        if(jsonClientObj != NULL && jsonClientObj->isConnFailure())
         {
             pthread_mutex_lock(&mutexhash);
             Args->Acct_numberObj->mErrLogFile = jsonClientObj->getLogFile();
