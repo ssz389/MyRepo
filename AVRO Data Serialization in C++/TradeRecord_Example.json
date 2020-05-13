@@ -3,7 +3,7 @@
 "trype": "record",
 "name": "TradeRecord",
 "fields": [
-  {"name": "cx", "type": {"type":"record", "name":CXRecord",
+  {"name": "cx", "type": {"type":"record", "name":"CXRecord",
     "fields": [
       {"name": "field1", "type": "string"},
       {"name": "field2", "type": ["null","string"]},
@@ -13,7 +13,7 @@
       {"name": "field6", "type": "long"},
      ]}},
    {"name": "sequence", "type": ["null", "string"]},
-   {"name": "tradeDetail", "type": {"type":"record", "name":TradeDetailRecord",
+   {"name": "tradeDetail", "type": {"type":"record", "name":"TradeDetailRecord",
     "fields": [
       {"name": "field1", "type": "string"},
       {"name": "field2", "type": ["null","string"]},
@@ -37,10 +37,10 @@
       {"name": "field2", "type": ["null","string"]},
       {"name": "field3", "type": "string"},
       {"name": "field4", "type": "boolean"},
-      {"name": "field5", "type": ["null", "boolean"]}.
+      {"name": "field5", "type": ["null", "boolean"]},
       {"name": "field6", "type": "long"}
      ]}]}},
-     {"name": "pii", "type": {"type":"array", "item": [ { "type":"record", "name":piiRecord",
+     {"name": "pii", "type": {"type":"array", "item": [ { "type":"record", "name":"piiRecord",
     "fields": [
       {"name": "field1", "type": "string"},
       {"name": "field2", "type": ["null","string"]},
