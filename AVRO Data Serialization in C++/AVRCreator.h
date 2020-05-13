@@ -1,3 +1,32 @@
+#include <vector>
+#include "avro/Encoder.hh"
+#include "avro/Decode.hh"
+#include "avro/ValidSchema.hh"
+#include "avro/Compiler.hh"
+#include "avro/DataFile.hh"
+#include "TradeRecordAvro.hh"
+#include "LegalRecordAvro.hh"
+#include "DebtRecoveryRecordAvro.hh"
+#include "BankruptcyRecordAvro.hh"
+#include "CollectionRecordAvro.hh"
+#include "ConsolDebtRecordAvro.hh"
+#include "NameRecord.h"
+#include "DateOfBirthRecord.h"
+#include "TradeDetailRecord.h"
+#include "PiiRecord.h"
+#include "SinRecord.h"
+#include "AddressRecord.h"
+#include "PhoneRecord.h"
+
+typedef struct
+{
+    std::string avroFieldName;
+    std::string avroFieldType;
+    FieldEnum FieldID;
+    int subfieldpos;
+    FieldEnum ParentFieldID;
+} fielddesc;
+
 class AVRCreator
 {
     protected:
@@ -20,4 +49,4 @@ class AVRCreator
     void buildNameBlock(T1 &curseg, T2 &vNameRec, T3 pNameRec);
     tempplate <typename T1, typename T2, typename T3, typename T4, typename T5>
     void buildPIIBlock(T1 &curseg, T2 &vPIIRec, T3 &vNameRec, T4 &vDOBRec, T4 pPIIRec);
-}
+};
