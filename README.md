@@ -1,2 +1,2 @@
 # MyRepo
-CPP, gSOAP code sample, data science projects, etc
+CPP, gSOAP code sample, etc
